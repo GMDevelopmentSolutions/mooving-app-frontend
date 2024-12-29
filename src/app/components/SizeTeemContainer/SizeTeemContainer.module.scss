@@ -1,0 +1,24 @@
+.teemContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	gap: 19px;
+	width: 100%;
+}
+
+.teemContainer::-webkit-scrollbar {
+	display: none;
+}
+.swiper {
+	padding-bottom: 20px !important;
+	margin-left: 0 !important;
+}
+@media screen and (max-width: 490px) {
+	.teemContainer {
+		gap: 8px;
+	}
+	.teemContainer {
+		overflow: hidden;
+	}
+}

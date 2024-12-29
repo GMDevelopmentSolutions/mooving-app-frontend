@@ -1,0 +1,77 @@
+.desc {
+	margin-top: 12px;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 1.2;
+	width: 460px;
+	max-width: 100%;
+}
+
+.form {
+	margin-top: 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	width: 460px;
+	max-width: 100%;
+}
+
+.label {
+	position: relative;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.2;
+	display: flex;
+	gap: 10px;
+	flex-direction: column;
+	color: #151414;
+	padding-bottom: 21px;
+}
+
+.field {
+	padding: 20px;
+	border-radius: 12px;
+	border: 1px solid #66666659;
+}
+
+.error {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 21px;
+	color: red;
+}
+
+.photoInput {
+	display: flex;
+	gap: 14px;
+	cursor: pointer;
+
+	& p {
+		font-size: 24px;
+		font-weight: 500;
+		line-height: 1.2;
+		color: #151414;
+	}
+}
+
+.photoInput:hover {
+	text-shadow: 0px 8px 10px rgba(149, 157, 165, 0.8);
+
+	& svg {
+		filter: drop-shadow(0px 8px 6px rgba(149, 157, 165, 0.8));
+	}
+}
+
+.photoInputWrapper {
+	position: relative;
+	padding-bottom: 21px;
+}
+
+@media screen and (max-width: 490px) {
+	.desc {
+		font-size: 16px;
+	}
+}

@@ -1,0 +1,94 @@
+.tbody {
+	tr {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		border-bottom: 1px solid #f2f6f4;
+		transition: background-color 0.3s ease;
+
+		&:hover {
+			background-color: #f2f8fe;
+		}
+	}
+
+	.id {
+		cursor: pointer;
+	}
+
+	td:nth-child(n):not(:nth-child(7)) {
+		font-size: 16px;
+		font-weight: 400;
+		line-height: 30px;
+		text-align: left;
+		color: #092c4c;
+		padding: 15px 6px;
+		width: calc(100% / 8);
+		word-break: break-word;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.icon {
+		fill: #ffffff;
+		stroke: #000000;
+	}
+
+	.refusal {
+		text-decoration: underline;
+		color: var(--text-black);
+	}
+}
+
+@media screen and (max-width: 490px) {
+	.tbody {
+		tr {
+			width: fit-content;
+			td {
+				width: 120px !important;
+			}
+		}
+	}
+
+	// .name {
+	// 	max-width: 97px;
+	// }
+
+	// .id {
+	// 	max-width: 75px;
+	// }
+
+	// .phone {
+	// 	max-width: 122px;
+	// }
+
+	// .requestType {
+	// 	max-width: 129px;
+	// }
+
+	// .startPoint {
+	// 	max-width: 86px;
+	// }
+
+	// .destination {
+	// 	max-width: 120px;
+	// }
+
+	// .description {
+	// 	max-width: 143px;
+	// }
+
+	// .date {
+	// 	max-width: 120px;
+	// }
+
+	// .status {
+	// 	max-width: 76px;
+	// }
+
+	// .button {
+	// 	max-width: 90px;
+	// }
+}

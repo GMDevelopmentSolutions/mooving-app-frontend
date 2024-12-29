@@ -1,0 +1,37 @@
+.formContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	gap: 24px;
+}
+.label {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.input {
+	width: 324px;
+	border-radius: 12px;
+	border: 1px solid #66666659;
+	padding: 18px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 21px;
+	&::placeholder {
+		color: #666666;
+	}
+}
+@media screen and (max-width: 490px) {
+	.formContainer {
+		flex-direction: column;
+		width: 100%;
+	}
+	.label {
+		width: 100%;
+	}
+	.input {
+		width: 100%;
+	}
+}

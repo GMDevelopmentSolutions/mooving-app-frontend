@@ -1,0 +1,35 @@
+.svg {
+  fill: --text-color-gray;
+  position: absolute;
+  left: 18px;
+}
+
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 235px;
+  height: 50px;
+}
+
+.inputSearch {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: left;
+  width: 100%;
+  color: var(--text-black);
+  border-radius: 100px;
+  border: 1px solid #eaeef4;
+  padding: 10px 10px 10px 40px;
+
+  &::placeholder {
+    color: #a1a1a1;
+  }
+}
+
+@media (max-width: 490px) {
+  .searchWrapper {
+    width: 192px;
+  }
+}

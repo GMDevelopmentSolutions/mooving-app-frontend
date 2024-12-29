@@ -1,0 +1,195 @@
+.input {
+	position: relative;
+	padding: 18px 15px;
+	border: 1px solid #d1d1d1;
+	border-radius: 12px;
+	background: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 21px;
+	color: var(--text-black);
+	width: 100%;
+
+	&::placeholder {
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 21px;
+		color: #6c6c6c;
+	}
+
+	&[type="number"] {
+		appearance: textfield;
+		-moz-appearance: textfield;
+		/* Firefox */
+	}
+
+	/* Chrome, Safari, Edge */
+	&[type="number"]::-webkit-inner-spin-button,
+	&[type="number"]::-webkit-outer-spin-button {
+		appearance: textfield;
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
+
+.successMessage,
+.error {
+	position: absolute;
+	bottom: -20px;
+	left: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 21px;
+}
+
+.successMessage {
+	color: green;
+}
+
+.error {
+	color: red;
+}
+
+.span {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.buttonHide {
+	position: absolute;
+	right: 0;
+	top: -25px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	cursor: pointer;
+	background: none;
+	border: none;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 27px;
+	text-align: right;
+	color: #666666;
+
+	svg {
+		width: 20px;
+		height: 20px;
+		fill: #666666;
+	}
+}
+
+.textarea {
+	width: 100%;
+	height: 65px;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+	color: var(--text-black);
+	border: none;
+	border-radius: 4px;
+	background-color: #f2f6f4;
+	resize: none;
+	padding: 6px 20px;
+
+	::placeholder {
+		font-size: 16px;
+		font-weight: 400;
+		line-height: 24px;
+		color: var(--text-grey);
+	}
+}
+
+.spanValue {
+	position: absolute;
+	bottom: -20px;
+	right: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 21px;
+	color: #aaaaaa;
+}
+
+.radioLabel {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding-left: 20px;
+
+	.radioInput {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	span {
+		position: relative;
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			border: 1px solid var(--text-black);
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 50%;
+			width: 12px;
+			height: 12px;
+			background-color: var(--text-black);
+			opacity: 0;
+			transition: opacity 0.3s ease;
+		}
+	}
+
+	.radioInput:checked + span::after {
+		opacity: 1;
+	}
+}
+
+.number {
+	text-align: left;
+}
+
+@media screen and (max-width: 490px) {
+	.input {
+		font-size: 16px;
+
+		&::placeholder {
+			font-size: 16px;
+		}
+	}
+
+	.buttonHide {
+		font-size: 12px;
+
+		svg {
+			width: 14px;
+			height: 14px;
+		}
+	}
+
+	.successMessage,
+	.error {
+		position: absolute;
+		bottom: -20px;
+		left: 0;
+		font-size: 10px;
+		font-weight: 400;
+		line-height: 21px;
+	}
+}

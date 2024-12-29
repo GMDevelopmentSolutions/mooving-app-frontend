@@ -1,0 +1,62 @@
+.confirmed {
+	color: #28a745;
+}
+.booked {
+	color: #007bff;
+}
+
+.request {
+	color: #ffcc00;
+}
+
+.cancelled {
+	color: #dc3545;
+}
+
+.closed {
+	color: #6c757d;
+}
+
+.invoice-confirmed {
+	color: #6f42c1;
+}
+
+.invoice-sent {
+	color: #17a2b8;
+}
+
+.refusal {
+	text-decoration: underline;
+	color: var(--text-black);
+}
+
+.statusDropdown {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+}
+
+.dropdownMenu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #ffffff;
+	border: 1px solid #6d9b894f;
+	border-radius: 0 0 12px 12px;
+	overflow: hidden;
+	width: fit-content;
+	z-index: 1;
+
+	li {
+		padding: 10px;
+		cursor: pointer;
+	}
+}
+
+.status {
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: #f2f8fe;
+	}
+}

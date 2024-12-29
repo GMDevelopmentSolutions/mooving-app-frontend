@@ -1,0 +1,63 @@
+.hideInput {
+	width: 0;
+	height: 0;
+	position: absolute;
+	margin: -1px;
+	padding: 0;
+	opacity: 0;
+	border: none;
+}
+
+.previewWrapper {
+	position: relative;
+	width: fit-content;
+}
+
+.button {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+
+	background-color: white;
+	border-radius: 50%;
+	transition: background-color 250ms ease-in-out;
+	box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
+	border-radius: 6px;
+	background: #ffffff99;
+	border: 1px solid #ffffff;
+	fill: #b72a2a;
+
+	& svg {
+		transition: transform 250ms ease-in-out;
+	}
+
+	&:hover {
+		background-color: #ccc;
+
+		& svg {
+			animation: tilt-shaking 300ms ease-in-out;
+		}
+	}
+}
+
+@keyframes tilt-shaking {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	25% {
+		transform: rotate(5deg);
+	}
+
+	50% {
+		transform: rotate(0eg);
+	}
+
+	75% {
+		transform: rotate(-5deg);
+	}
+
+	100% {
+		transform: rotate(0deg);
+	}
+}

@@ -1,0 +1,49 @@
+.form {
+	width: 535px;
+	max-width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	margin-top: 16px;
+}
+
+.formWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.addAddressList {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.addressList {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.addressItem {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 5px;
+	border-bottom: 1px solid #bfc5b6;
+	cursor: pointer;
+	transition: all 0.3s ease;
+
+	&:hover {
+		color: #87898b;
+	}
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	svg {
+		fill: #7bb02c;
+	}
+}

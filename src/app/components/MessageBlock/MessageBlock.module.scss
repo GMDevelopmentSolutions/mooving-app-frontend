@@ -1,0 +1,20 @@
+.text {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 14px;
+	text-align: left;
+	color: var(--text-grey);
+	width: 305px;
+	display: flex;
+	flex-direction: row;
+	gap: 2px;
+}
+.asterisk {
+	color: var(--text-red);
+}
+
+@media screen and (max-width: 490px) {
+	.text {
+		font-size: 12px;
+	}
+}

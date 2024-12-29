@@ -1,0 +1,55 @@
+.form {
+	padding-top: 26px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	width: 442px;
+	max-width: 100%;
+}
+
+.row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 24px;
+	width: 442px;
+}
+
+.column {
+	display: grid;
+	grid-template-rows: 1fr;
+	gap: 24px;
+	width: 100%;
+}
+
+.label {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 7px;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+	display: none;
+
+	& > div {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 490px) {
+	.label {
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 14px;
+	}
+
+	.row {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.column {
+		width: 100%;
+	}
+}

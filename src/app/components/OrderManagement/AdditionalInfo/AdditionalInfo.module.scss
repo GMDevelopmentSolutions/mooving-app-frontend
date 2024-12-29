@@ -1,0 +1,35 @@
+.WrapInfo {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 0 0 0;
+  width: 670px;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 17px;
+}
+.item {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  color: #111111;
+  list-style-type: decimal;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #4f4f4f;
+}
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 36px;
+
+  button {
+    width: 219px;
+    flex-shrink: 0;
+  }
+}

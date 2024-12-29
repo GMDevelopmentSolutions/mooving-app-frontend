@@ -1,0 +1,21 @@
+.list {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	width: fit-content;
+}
+
+.swiper {
+	width: 278px !important;
+	height: 100%;
+	overflow: visible !important;
+	margin-left: 0 !important;
+}
+.swiperSlide {
+	width: 135px !important;
+}
+.spiderWrapper {
+	width: 100dvw;
+	overflow: hidden;
+	margin-left: 0 !important;
+}

@@ -1,0 +1,69 @@
+.thead {
+	background-color: #f2f6f4;
+	border-radius: 8px;
+
+	tr {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	th {
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 30px;
+		text-align: left;
+		padding: 15px 6px;
+		width: calc(100% / 5);
+	}
+}
+
+@media screen and (max-width: 490px) {
+	.thead {
+		tr {
+			width: fit-content;
+		}
+	}
+
+	.name {
+		min-width: 97px;
+	}
+
+	.id {
+		min-width: 75px;
+	}
+
+	.phone {
+		min-width: 122px;
+	}
+
+	.requestType {
+		min-width: 129px;
+	}
+
+	.startPoint {
+		min-width: 86px;
+	}
+
+	.destination {
+		min-width: 120px;
+	}
+
+	.description {
+		min-width: 143px;
+	}
+
+	.date {
+		min-width: 120px;
+	}
+
+	.status {
+		min-width: 76px;
+	}
+
+	.button {
+		min-width: 90px;
+	}
+}

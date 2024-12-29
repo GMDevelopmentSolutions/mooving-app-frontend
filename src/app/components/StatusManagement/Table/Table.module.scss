@@ -1,0 +1,21 @@
+.tableContainer {
+	max-width: 100%;
+	width: 100%;
+	margin-bottom: 22px;
+}
+
+.table {
+	width: 100%;
+	height: auto;
+	overflow-x: auto;
+}
+
+@media (max-width: 490px) {
+	.tableContainer {
+		width: auto;
+	}
+
+	.table {
+		width: auto;
+	}
+}

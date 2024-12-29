@@ -1,0 +1,94 @@
+.list {
+}
+
+.link {
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 18px;
+	text-decoration: none;
+	padding: 24px 0 24px 23px;
+	box-sizing: border-box;
+	transition: background-color 0.3s ease;
+	&::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 6px;
+		height: 100%;
+		background-color: #d3b7f2;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+	span {
+		font-size: 18px;
+		font-weight: 400;
+		line-height: 27px;
+		text-align: left;
+		color: #ffffff;
+		width: 223px;
+		transition: color 0.3s ease;
+	}
+	svg {
+		fill: #ffffff;
+		transition: fill 0.3s ease;
+	}
+	&.current {
+		background-color: #f2f6f4;
+
+		&::before {
+			opacity: 1;
+		}
+		span {
+			color: #000000;
+		}
+		svg {
+			fill: #531baf;
+		}
+	}
+	&:hover {
+		background-color: #f2f6f4;
+
+		&::before {
+			opacity: 1;
+		}
+		span {
+			color: #000000;
+		}
+		svg {
+			fill: #531baf;
+		}
+	}
+}
+
+@media screen and (max-width: 490px) {
+	.link {
+		padding: 0 12px;
+		height: 50px;
+		gap: 8px;
+		svg {
+			width: 20px;
+			height: 15px;
+		}
+		span {
+			font-size: 16px;
+		}
+		&.current {
+			background: #163561;
+			&::before {
+				opacity: 0;
+			}
+			span {
+				color: #ffffff;
+			}
+
+			svg {
+				fill: #531baf;
+			}
+		}
+	}
+}

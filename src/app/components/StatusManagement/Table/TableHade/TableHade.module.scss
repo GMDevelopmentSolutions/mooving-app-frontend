@@ -1,0 +1,47 @@
+.thead {
+  background-color: #f2f6f4;
+  border-radius: 8px;
+
+  tr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  th {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: left;
+    padding: 15px 6px;
+    width: calc(100% / 5);
+  }
+}
+
+@media (max-width: 490px) {
+  .thead {
+    width: fit-content;
+  }
+
+  .label {
+    min-width: 165px;
+  }
+
+  .description {
+    min-width: 200px;
+  }
+
+  .status {
+    min-width: 97px;
+  }
+
+  .date {
+    min-width: 92px;
+  }
+
+  .button {
+    min-width: 122px;
+  }
+}
