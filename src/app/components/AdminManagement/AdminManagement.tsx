@@ -31,6 +31,7 @@ const AdminManagement: FC = ({}) => {
 			setMergedOrders(data.orders);
 			setPrevFilter(filter);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, filter, isFetching]);
 
 	return (
