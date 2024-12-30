@@ -9,7 +9,7 @@ export const useChangeStatusOrder = () => {
 		mutationFn: ({ id, status }: { id: string; status: OrderStatus }) =>
 			adminOrder.changeStatusOrder({ id, status }),
 		onSuccess: () => {
-			Notify.success("You have successfully logged in.", {
+			Notify.success("The action was successful.", {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

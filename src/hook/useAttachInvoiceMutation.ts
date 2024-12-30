@@ -9,7 +9,7 @@ export const useAttachInvoiceMutation = () => {
 			adminOrder.attachInvoice({ file, id }),
 
 		onSuccess: () => {
-			Notify.success("You have successfully logged in.", {
+			Notify.success("The action was successful.", {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

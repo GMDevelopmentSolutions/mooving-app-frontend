@@ -1,14 +1,15 @@
-import { authorizationService } from "@/services/authorizationService";
+import { ChangeInfoParams } from "@/interface/interface";
+import { userService } from "@/services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Notify } from "notiflix";
 
-export const useSingInMutation = () => {
+export const useChangeInfo = () => {
 	return useMutation({
-		mutationFn: ({ email, password }: { email: string; password: string }) =>
-			authorizationService.sinInRequest({ email, password }),
+		mutationFn: (changeInfoValues: ChangeInfoParams) =>
+			userService.changeInfo(changeInfoValues),
 		onSuccess: () => {
-			Notify.success("The action was successful.", {
+			Notify.success(" You have successfully changed your information.", {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,
@@ -16,7 +17,7 @@ export const useSingInMutation = () => {
 			});
 		},
 		onError: (error: AxiosError) => {
-			Notify.failure(`${error.response?.data}`, {
+			Notify.failure(`${error.message}`, {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

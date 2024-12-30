@@ -4,12 +4,24 @@ import useWindowWidth from "@/hook/useWindowWidth";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import styles from "./DetailCardList.module.scss";
+import { IInventorsItems } from "@/interface/interface";
 
-const DetailCardList: FC = ({}) => {
+interface IDetailCardListProps {
+	inventors: IInventorsItems[];
+}
+
+const DetailCardList: FC<IDetailCardListProps> = ({ inventors }) => {
 	const isMobile = useWindowWidth(491);
 	return (
 		<>
-			{!isMobile && <DetailCard />}
+			<ul className={styles.list}>
+				{!isMobile &&
+					inventors.map((inventor: IInventorsItems) => (
+						<li key={inventor.id} className={styles.item}>
+							<DetailCard inventor={inventor} />
+						</li>
+					))}
+			</ul>
 			{isMobile && (
 				<div className={styles.spiderWrapper}>
 					<Swiper
@@ -17,18 +29,11 @@ const DetailCardList: FC = ({}) => {
 						slidesPerView={1}
 						spaceBetween={8}
 					>
-						<SwiperSlide className={styles.swiperSlide}>
-							<DetailCard />
-						</SwiperSlide>
-						<SwiperSlide className={styles.swiperSlide}>
-							<DetailCard />
-						</SwiperSlide>
-						<SwiperSlide className={styles.swiperSlide}>
-							<DetailCard />
-						</SwiperSlide>
-						<SwiperSlide className={styles.swiperSlide}>
-							<DetailCard />
-						</SwiperSlide>
+						{inventors.map((inventor: IInventorsItems) => (
+							<SwiperSlide key={inventor.id} className={styles.swiperSlide}>
+								<DetailCard inventor={inventor} />
+							</SwiperSlide>
+						))}
 					</Swiper>
 				</div>
 			)}

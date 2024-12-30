@@ -5,7 +5,7 @@ import Container from "../Container/Container";
 import Button from "../Button/Button";
 import Toolbar from "./Toolbar/Toolbar";
 import HeaderAdmin from "./HeaderAdmin/HeaderAdmin";
-import { useGetAllOrders } from "@/hook/getAllAdminOrders";
+import { useGetAllOrders } from "@/hook/useGetAllAdminOrders";
 import { IOrderItem } from "@/interface/interface";
 
 const AdminManagement: FC = ({}) => {
@@ -31,7 +31,6 @@ const AdminManagement: FC = ({}) => {
 			setMergedOrders(data.orders);
 			setPrevFilter(filter);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, filter, isFetching]);
 
 	return (

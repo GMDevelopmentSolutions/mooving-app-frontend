@@ -50,4 +50,15 @@ export const adminOrder = {
 			throw error;
 		}
 	},
+
+	getFullInformationByOrderId: async (orderId: string) => {
+		try {
+			const { data } = await instance.get(
+				`/admin/orders/${orderId}/getFullInformation`,
+			);
+			return data;
+		} catch (error) {
+			throw error;
+		}
+	},
 };

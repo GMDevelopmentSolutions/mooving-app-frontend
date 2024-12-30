@@ -74,7 +74,9 @@ const AdminTableBody: FC<AdminTableBodyProps> = ({ orders }) => {
 
 			{modalInfo && (
 				<Modal title="Order info" handleClose={handleInfo}>
-					{orderInfo && <InfoList orderInfo={orderInfo} locations={locations} />}
+					{orderInfo && (
+						<InfoList locations={locations} orderId={orderInfo.id || ""} />
+					)}
 				</Modal>
 			)}
 

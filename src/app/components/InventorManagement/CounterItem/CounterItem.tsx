@@ -25,14 +25,20 @@ const CounterItem: FC<CounterItemProps> = ({
 		quantity,
 	},
 }) => {
+	const photo =
+		photoPaths.length !== 0
+			? process.env.NEXT_PUBLIC_API_URL + "/uploads/" + photoPaths
+			: "/img/inventorItem/other.png";
 	const data = useQueryClient();
 	const rooms = data.getQueryData<Room[]>(["inventorGetRooms"]);
-	const [count, setCount] = useState(rooms?.length ? quantity : 0);
+	const [count, setCount] = useState(quantity);
 	const [modalAttach, setModalAttach] = useState(false);
 	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(
-		rooms?.length ? rooms[0].id : null,
-	);
+	const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (rooms?.length && !selectedRoomId) setSelectedRoomId(rooms[0].id);
+	}, [rooms, selectedRoomId]);
 
 	const { mutate: changeInventor, isPending } = useInventorMutation({
 		mutationFn: (params: { id: string; roomId: string }) =>
@@ -90,18 +96,24 @@ const CounterItem: FC<CounterItemProps> = ({
 	useEffect(() => {
 		if (uploadedFile) {
 			callMutate(count);
+			setUploadedFile(null);
 		}
 	}, [uploadedFile, count, callMutate]);
 
 	const handleIncrement = () => {
-		setCount(count => count + 1);
-		debouncedMutate(count);
+		setCount(prevCount => {
+			const newCount = prevCount + 1;
+			debouncedMutate(newCount);
+			return newCount;
+		});
 	};
-
 	const handleDecrement = () => {
 		if (count === 0) return;
-		setCount(count => count - 1);
-		debouncedMutate(count);
+		setCount(prevCount => {
+			const newCount = prevCount - 1;
+			debouncedMutate(newCount);
+			return newCount;
+		});
 	};
 
 	const handleAttach = () => {
@@ -121,13 +133,15 @@ const CounterItem: FC<CounterItemProps> = ({
 			},
 			() => null,
 			{
-				backgroundColor: "#163561",
-				titleColor: "white",
-				messageColor: "white",
+				backgroundColor: "white",
+				titleColor: "black",
+				messageColor: "black",
 				titleFontSize: "24px",
 				cancelButtonBackground: "red",
 				okButtonColor: "black",
 				cancelButtonColor: "black",
+				borderRadius: "8px",
+				okButtonBackground: "green",
 			},
 		);
 	};
@@ -160,7 +174,7 @@ const CounterItem: FC<CounterItemProps> = ({
 				<div className={styles.counterContainer}>
 					<AddPhotoInput
 						setValue={file => setUploadedFile(file || null)}
-						initHref={process.env.NEXT_PUBLIC_API_URL + "/uploads/" + photoPaths}
+						initHref={photo}
 						previewClassName={styles.preview}
 						className={styles.photoInput}
 					>

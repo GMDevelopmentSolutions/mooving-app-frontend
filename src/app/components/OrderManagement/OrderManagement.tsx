@@ -18,6 +18,7 @@ import styles from "./OrderManagement.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRoute } from "../../redux/selectLocation";
 import {
+	resetRoute,
 	setEndLocation,
 	setInventors,
 	setSizeTeem,
@@ -32,6 +33,7 @@ import { useGetOrderById } from "@/hook/useGetOrderById";
 import { IInventorsItems, IOrderItem } from "@/interface/interface";
 import { useGetInventorData } from "@/hook/useGetInventorData";
 import { inventorService } from "@/services/inventorService";
+import { useGetInventoryItemsByOrderId } from "@/hook/useGetInventoryItemsByOrderId";
 
 interface OrderManagementProps {
 	orderId?: string;
@@ -52,10 +54,9 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 		inventorService.getItems(),
 	);
 
-	const getInventoryItemsByOrderId = useGetInventorData(
-		"inventorGetInventorsByOrderId",
-		() => inventorService.getInventoryItemByOrderId(orderId ?? ""),
-	);
+	const getInventoryItemsByOrderId = useGetInventoryItemsByOrderId({
+		orderId: orderId ?? "",
+	});
 
 	const { data: inventors, isPending: inventorsIsPending } = orderId
 		? getInventoryItemsByOrderId
@@ -65,19 +66,12 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 
 	const initialState = useSelector(selectRoute);
 
-	const { mutate: submitRoute } = useSubmitRouteMutation();
+	const { mutate: submitRoute, isSuccess: submitRouteIsSuccess } =
+		useSubmitRouteMutation();
 
 	const { data: order } = useGetOrderById({ orderId: orderId ?? "" });
 
-	const [location, setLocation] = useState<IOrderItem>(
-		orderId ? order : initialState,
-	);
-
-	useEffect(() => {
-		if (order) {
-			setLocation(order);
-		}
-	}, [order]);
+	const location: IOrderItem = orderId ? order : initialState;
 
 	const handleShowAddStopForm = () => {
 		setShowAddStopForm(!showAddStopForm);
@@ -139,6 +133,14 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 		submitRoute(location);
 	};
 
+	const handleCancelBooking = () => {
+		dispatch(resetRoute());
+	};
+
+	useEffect(() => {
+		if (submitRouteIsSuccess) dispatch(resetRoute());
+	}, [submitRouteIsSuccess, dispatch]);
+
 	return (
 		<>
 			{showAddStopForm && (
@@ -156,7 +158,7 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 					title="Shedule a call with account manager"
 					handleClose={() => handleShowFeedbackForm()}
 				>
-					<FeedbackForm />
+					<FeedbackForm onClose={handleShowFeedbackForm} />
 				</Modal>
 			)}
 			<Header>{orderId ? "Label :" + orderId : "Edit Profile"}</Header>
@@ -172,6 +174,7 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 						/>
 
 						<DeliveryPoint
+							isCompleted={Boolean(orderId)}
 							coordinates={
 								location?.startLocation && [
 									location.startLocation.longitude,
@@ -185,6 +188,7 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 							fill="#531BAF"
 						/>
 						<DeliveryPoint
+							isCompleted={Boolean(orderId)}
 							coordinates={
 								location?.finalDestination && [
 									location.finalDestination.longitude,
@@ -200,6 +204,7 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 						{location?.stopLocations?.length > 0 &&
 							location.stopLocations.map(({ id, latitude, longitude }) => (
 								<DeliveryPoint
+									isCompleted={Boolean(orderId)}
 									key={id}
 									id={id}
 									coordinates={[longitude, latitude]}
@@ -231,10 +236,13 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 						<DescriptionContainer disabled={Boolean(orderId)} />
 					</Container>
 					<Container>
-						<InventorAdded isComplete={Boolean(orderId)} />
+						{inventors && (
+							<InventorAdded inventors={inventors} isComplete={Boolean(orderId)} />
+						)}
 					</Container>
 					<Container>
 						<BookingInfo
+							onCancelBooking={handleCancelBooking}
 							isComplete={Boolean(orderId)}
 							inventorsIsPending={inventorsIsPending}
 							sendOrder={handleSendOrder}

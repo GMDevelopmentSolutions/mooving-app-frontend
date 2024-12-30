@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import styles from "./SizeTeemContainer.module.scss";
 import SizeTeemCart from "../SizeTeemCart/SizeTeemCart";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -41,19 +41,18 @@ const SizeTeemContainer: FC<SizeTeemContainerProps> = ({
 	labourRequiredType,
 	disabled,
 }) => {
-	const [selectedSize, setSelectedSize] = useState<number>(
-		labourRequiredType || 0,
-	);
+	// const [selectedSize, setSelectedSize] = useState<number>(
+	// 	labourRequiredType || 0,
+	// );
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		dispatch(Number(event.target.value));
-		setSelectedSize(Number(event.target.value));
 	};
 
 	return (
 		<div className={styles.teemContainer}>
 			<Swiper
-				className={`${styles.swiper} mySwiper`}
+				className={`${styles.swiper} mySwiper swiperSizeTeem`}
 				slidesPerView={"auto"}
 				spaceBetween={8}
 				breakpoints={{
@@ -71,7 +70,7 @@ const SizeTeemContainer: FC<SizeTeemContainerProps> = ({
 							value={item.value}
 							text={item.text}
 							onChange={handleChange}
-							checked={selectedSize === item.value}
+							checked={labourRequiredType === item.value}
 							disabled={disabled}
 						/>
 					</SwiperSlide>

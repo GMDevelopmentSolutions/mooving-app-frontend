@@ -15,11 +15,13 @@ import FormAddRoom from "../FormAddRoom/FormAddRoom";
 import { useGetInventorData } from "@/hook/useGetInventorData";
 import { inventorService } from "@/services/inventorService";
 import { IInventorsItems, Room } from "@/interface/interface";
+import Link from "next/link";
 
 const InventorManagement: FC = ({}) => {
 	const [showModal, setShowModal] = useState(false);
 	const [showRoomModal, setShowRoomModal] = useState(false);
 	const [showRoomModalCreate, setShowRoomModalCreate] = useState(false);
+	const [idToInvemtorCreate, setIdToInvemtorCreate] = useState("");
 	const { data, isError, error } = useGetInventorData("inventorGetRooms", () =>
 		inventorService.getRooms(),
 	);
@@ -27,11 +29,11 @@ const InventorManagement: FC = ({}) => {
 	const { data: inventors } = useGetInventorData("inventorGetInventors", () =>
 		inventorService.getItems(),
 	);
-
 	const inventorsItems = inventors as IInventorsItems[] | undefined;
 
 	const handleShowModal = (): void => {
 		setShowModal(!showModal);
+		if (showModal) setIdToInvemtorCreate("");
 	};
 
 	const handleShowRoomModal = (): void => {
@@ -50,7 +52,11 @@ const InventorManagement: FC = ({}) => {
 		<>
 			{showModal && (
 				<Modal handleClose={handleShowModal} title="Add your inventory">
-					<FormaInventor rooms={rooms} onClose={handleShowModal} />
+					<FormaInventor
+						idToInvemtorCreate={idToInvemtorCreate}
+						rooms={rooms}
+						onClose={handleShowModal}
+					/>
 				</Modal>
 			)}
 			{showRoomModalCreate && (
@@ -91,6 +97,7 @@ const InventorManagement: FC = ({}) => {
 						error={error}
 						rooms={rooms}
 						onclick={{
+							setIdToInvemtorCreate,
 							handleShowModal,
 							handleShowModalRoomCreate,
 						}}
@@ -108,10 +115,11 @@ const InventorManagement: FC = ({}) => {
 							);
 						})}
 					</div>
-
-					<Button buttonClass="buttonGreen" className={styles.buttonGreen}>
-						Save and back to request
-					</Button>
+					<Link href="/order">
+						<Button buttonClass="buttonGreen" className={styles.buttonGreen}>
+							Save and back to request
+						</Button>
+					</Link>
 				</WrapColum>
 			</Container>
 		</>

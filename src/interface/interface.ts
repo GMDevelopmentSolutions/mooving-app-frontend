@@ -11,14 +11,6 @@ export interface IFormSingIn extends IFormLogin {
 	policy: boolean;
 }
 
-export interface IFormEditProfile {
-	name: string;
-	phone: string;
-	email: string;
-	newPassword: string;
-	confirmPassword: string;
-}
-
 export interface IWrapperProps {
 	children: React.ReactNode;
 	background?: string;
@@ -163,21 +155,31 @@ export interface InventorListProps {
 	error: Error | null;
 	rooms?: { id: string; name: string; photoPath: string }[];
 	onclick: {
+		setIdToInvemtorCreate: React.Dispatch<React.SetStateAction<string>>;
 		handleShowModal: () => void;
 		handleShowModalRoomCreate: () => void;
 	};
 }
 
+interface OnClickProps {
+	handleShowModal: () => void;
+	setIdToInvemtorCreate: React.Dispatch<React.SetStateAction<string>>;
+	handleShowModalRoomCreate: () => void;
+}
+
 export interface InventorItemProps {
+	id?: string | undefined;
 	src: string;
 	text: string;
-	onClick?: () => void;
+	onClick?: OnClickProps;
 }
 
 export interface FormaInventorProps {
 	onSubmit?: (values: IFormaInventor) => void;
 	onClose?: () => void;
 	rooms: Option[] | undefined;
+	roomId?: string;
+	idToInvemtorCreate: string;
 }
 
 export interface IFormaInventor {
@@ -194,4 +196,13 @@ export interface IFormaInventor {
 
 export interface CounterItemProps {
 	props: IInventorsItems;
+}
+
+export interface ChangeInfoParams {
+	name: string;
+	phone: string;
+	email: string;
+	currentPassword: string;
+	newPassword: string;
+	confirmNewPassword: string;
 }

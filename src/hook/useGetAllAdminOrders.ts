@@ -11,5 +11,6 @@ export const useGetAllOrders = ({
 	return useQuery({
 		queryKey: ["getAllAdminOrders", page, filter],
 		queryFn: () => adminOrder.getAllOrdersRequest(page, filter),
+		refetchOnWindowFocus: false,
 	});
 };

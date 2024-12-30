@@ -10,7 +10,7 @@ export const useAdminLoginMutation = (setToken: SetToken) => {
 			authorizationService.loginRequest({ email, password }),
 		onSuccess: () => {
 			setToken("true");
-			Notify.success("You have successfully logged in.", {
+			Notify.success("The action was successful.", {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

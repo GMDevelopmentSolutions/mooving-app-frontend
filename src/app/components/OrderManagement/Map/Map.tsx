@@ -14,6 +14,10 @@ interface Props {
 }
 
 const Map: FC<Props> = ({ coordinates, extraMarkers = [] }) => {
+	const filteredMarkers = extraMarkers.filter(
+		marker => !(marker.latitude === 0 && marker.longitude === 0),
+	);
+
 	const { startLocation, finalDestination } = coordinates ?? {};
 
 	const mapContainer = useRef<HTMLDivElement>(null);
@@ -64,35 +68,38 @@ const Map: FC<Props> = ({ coordinates, extraMarkers = [] }) => {
 				};
 
 				map.current.on("load", () => {
-					map.current?.addSource("route", {
-						type: "geojson",
-						data: routeGeoJSON,
-					});
+					if (map.current) {
+						map.current.addSource("route", {
+							type: "geojson",
+							data: routeGeoJSON,
+						});
 
-					map.current?.addLayer({
-						id: "routeLineLayer",
-						type: "line",
-						source: "route",
-						layout: {
-							"line-join": "round",
-							"line-cap": "round",
-						},
-						paint: {
-							"line-color": "#007AFF",
-							"line-width": 4,
-						},
-					});
+						map.current.addLayer({
+							id: "routeLineLayer",
+							type: "line",
+							source: "route",
+							layout: {
+								"line-join": "round",
+								"line-cap": "round",
+							},
+							paint: {
+								"line-color": "#007AFF",
+								"line-width": 4,
+							},
+						});
 
-					const bounds = new maplibregl.LngLatBounds()
-						.extend([start.lon, start.lat])
-						.extend([destination.lon, destination.lat]);
+						const bounds = new maplibregl.LngLatBounds()
+							.extend([start.lon, start.lat])
+							.extend([destination.lon, destination.lat]);
 
-					map.current?.fitBounds(bounds, {
-						padding: 50,
-						maxZoom: 14,
-					});
+						map.current.fitBounds(bounds, {
+							padding: 50,
+							maxZoom: 14,
+						});
+					}
 				});
-			} else {
+			} else if (map.current) {
+				// Only perform actions when map.current is not null
 				if (startMarker.current && start.lon) {
 					startMarker.current.setLngLat([start.lon, start.lat]);
 				}
@@ -114,8 +121,8 @@ const Map: FC<Props> = ({ coordinates, extraMarkers = [] }) => {
 					},
 					properties: {},
 				};
-				const routeSource = map.current.getSource("route");
 
+				const routeSource = map.current.getSource("route");
 				if (routeSource) {
 					(routeSource as maplibregl.GeoJSONSource).setData(routeGeoJSON);
 				}
@@ -131,12 +138,14 @@ const Map: FC<Props> = ({ coordinates, extraMarkers = [] }) => {
 			}
 		}
 
+		// Handle extra markers
 		extraMarkersRef.current.forEach(marker => marker.remove());
-		extraMarkersRef.current = extraMarkers.map(
+		extraMarkersRef.current = filteredMarkers.map(
 			({ longitude: lng, latitude: lat }) => {
 				const marker = new maplibregl.Marker({ color: "#FF0000" })
 					.setLngLat([lng, lat])
 					.addTo(map.current!);
+
 				return marker;
 			},
 		);
@@ -145,7 +154,7 @@ const Map: FC<Props> = ({ coordinates, extraMarkers = [] }) => {
 		start.lat,
 		destination.lon,
 		destination.lat,
-		extraMarkers,
+		filteredMarkers,
 		coordinates,
 	]);
 

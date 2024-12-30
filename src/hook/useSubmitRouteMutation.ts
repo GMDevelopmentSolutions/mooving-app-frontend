@@ -1,22 +1,19 @@
-import { resetRoute } from "@/app/redux/slice/locationSlice";
 import { IOrderItem } from "@/interface/interface";
+import { queryClient } from "@/lib/queryClient";
 import { orderService } from "@/services/orderService";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Notify } from "notiflix";
-import { useDispatch } from "react-redux";
 
 export const useSubmitRouteMutation = () => {
-	const dispatch = useDispatch();
-
 	return useMutation({
 		mutationKey: ["submitRoute"],
 		mutationFn: async (routeData: IOrderItem) => {
 			await orderService.getRequest(routeData);
 		},
 		onSuccess: () => {
-			dispatch(resetRoute());
-			Notify.success("You have successfully logged in.", {
+			queryClient.invalidateQueries({ queryKey: ["inventorGetInventors"] });
+			Notify.success("The action was successful.", {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

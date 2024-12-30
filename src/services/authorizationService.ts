@@ -40,4 +40,13 @@ export const authorizationService = {
 			throw error;
 		}
 	},
+
+	logoutRequest: async () => {
+		try {
+			const { data } = await instance.get("/logout");
+			return data;
+		} catch (error) {
+			throw error;
+		}
+	},
 };

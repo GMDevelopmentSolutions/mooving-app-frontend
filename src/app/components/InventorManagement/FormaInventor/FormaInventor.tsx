@@ -1,11 +1,12 @@
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { FC } from "react";
+import { FC, useState } from "react";
 import Input from "../../input/input";
 import {
 	ButtonTypeEnum,
 	FormaInventorProps,
 	IFormaInventor,
+	IInventorsItems,
 } from "../../../../interface/interface";
 import Label from "../../Label/Label";
 import Button from "../../Button/Button";
@@ -17,6 +18,7 @@ import SpriteSVG from "../../SpriteSVG/SpriteSVG";
 import Notiflix, { Notify } from "notiflix";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { inventorService } from "@/services/inventorService";
+import { useInventorMutation } from "@/hook/useInventorMutate";
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024;
 
@@ -31,7 +33,7 @@ enum SuportedFilesExtensions {
 	jpeg = "jpeg",
 }
 
-const validationSchema = Yup.object({
+const validationSchemaCreateInventor = Yup.object({
 	name: Yup.string().required("The field is mandatory"),
 	description: Yup.string().min(0).max(30).required("The field is mandatory"),
 	length: Yup.number()
@@ -76,27 +78,51 @@ const initialValues: IFormaInventor = {
 };
 
 const FormaInventor: FC<FormaInventorProps> = ({
+	idToInvemtorCreate,
 	rooms,
 	onSubmit,
 	onClose,
 }) => {
+	const [inventorName, setInventorName] = useState("");
 	const queryClient = useQueryClient();
+	const { mutate: changeInventor } = useInventorMutation({
+		mutationFn: (params: { id: string | undefined; roomId: string }) =>
+			inventorService.changeItemRoom(params?.id, params.roomId),
+		onSuccessMessage: "Item successfully attached to room!",
+		onErrorMessage: "Failed to attach item to room.",
+		invalidateQueriesKey: "inventorGetInventors",
+	});
 	const { mutate, isError, error } = useMutation({
 		mutationFn: inventorService.createItem,
-		onSuccess: () => {
-			if (onClose) onClose();
-			Notify.success("Inventor created successfully!", {
-				position: "right-top",
-				clickToClose: true,
-				timeout: 5000,
-				cssAnimationStyle: "zoom",
-			});
-			queryClient.invalidateQueries({ queryKey: ["inventorGetInventors"] });
-			Notiflix.Loading.remove();
-		},
-
 		onMutate: () => {
-			Notiflix.Loading.arrows({ svgColor: "#628ecb" });
+			Notiflix.Loading.arrows();
+		},
+		onSuccess: async () => {
+			if (onClose) onClose();
+
+			if (!idToInvemtorCreate) {
+				queryClient.invalidateQueries({ queryKey: ["inventorGetInventors"] });
+				Notify.success("Inventor created successfully!", {
+					position: "right-top",
+					clickToClose: true,
+					timeout: 5000,
+					cssAnimationStyle: "zoom",
+				});
+				Notiflix.Loading.remove();
+			} else {
+				await queryClient.refetchQueries({ queryKey: ["inventorGetInventors"] });
+				const updatedInventors = queryClient.getQueryData<IInventorsItems[]>([
+					"inventorGetInventors",
+				]);
+				const filteredInventor = updatedInventors?.find(
+					inventor => inventor.name === inventorName,
+				);
+				const filteredInventorId = filteredInventor?.id;
+				changeInventor({ id: filteredInventorId, roomId: idToInvemtorCreate });
+				Notiflix.Loading.remove();
+			}
+
+			setInventorName("");
 		},
 		onError: () => {
 			Notiflix.Loading.remove();
@@ -115,6 +141,7 @@ const FormaInventor: FC<FormaInventorProps> = ({
 		resetForm();
 		const formData = new FormData();
 		formData.append("name", values.name);
+		setInventorName(values.name);
 		formData.append("description", values.description);
 		formData.append("length", values.length.toString());
 		formData.append("height", values.height.toString());
@@ -132,7 +159,7 @@ const FormaInventor: FC<FormaInventorProps> = ({
 	return (
 		<Formik
 			initialValues={initialValues}
-			validationSchema={validationSchema}
+			validationSchema={validationSchemaCreateInventor}
 			onSubmit={handleSubmit}
 		>
 			{({ setFieldValue }) => (

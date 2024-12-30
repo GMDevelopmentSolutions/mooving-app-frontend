@@ -1,6 +1,22 @@
 import instance from "./axiosInstance";
 
 export const inventorService = {
+	getInventoryItemByOrderId: async (orderId: string) => {
+		try {
+			const { data } = await instance.get(`/inventory-item/getByOrder/${orderId}`);
+			return data;
+		} catch (error) {
+			throw error;
+		}
+	},
+	getInventoryItemByRoomId: async (roomId: string | undefined) => {
+		try {
+			const { data } = await instance.get(`/inventory-item/getByRoom/${roomId}`);
+			return data;
+		} catch (error) {
+			throw error;
+		}
+	},
 	getFromRoom: async (roomId: number) => {
 		try {
 			const response = await instance.post(`/room/get/${roomId}`);
@@ -34,7 +50,7 @@ export const inventorService = {
 			throw error;
 		}
 	},
-	deleteRoom: async (roomId: number) => {
+	deleteRoom: async (roomId: string | undefined) => {
 		try {
 			const response = await instance.delete(`/room/delete/${roomId}`);
 			return response;
@@ -79,7 +95,10 @@ export const inventorService = {
 			throw error;
 		}
 	},
-	changeItemRoom: async (inventoryItemId: string, roomId: string) => {
+	changeItemRoom: async (
+		inventoryItemId: string | undefined,
+		roomId: string,
+	) => {
 		try {
 			const response = await instance.put(
 				"/inventory-item/attach-to-room",
@@ -99,7 +118,6 @@ export const inventorService = {
 		}
 	},
 	changeItem: async (changeFormData: FormData, itemId: string) => {
-		console.log(itemId);
 		try {
 			const response = await instance.put(
 				`/inventory/update/${itemId}`,
@@ -111,14 +129,6 @@ export const inventorService = {
 				},
 			);
 			return response;
-		} catch (error) {
-			throw error;
-		}
-	},
-	getInventoryItemByOrderId: async (orderId: string) => {
-		try {
-			const { data } = await instance.get(`/inventory-item/getByOrder/${orderId}`);
-			return data;
 		} catch (error) {
 			throw error;
 		}

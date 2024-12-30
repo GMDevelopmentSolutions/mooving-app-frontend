@@ -1,5 +1,5 @@
 "use client";
-import { Formik, Form, FormikHelpers, ErrorMessage, Field } from "formik";
+import { Formik, Form,  ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
 import styles from "./formSingIn.module.scss";
 import Input from "../input/input";
@@ -7,8 +7,9 @@ import Label from "../Label/Label";
 import { ButtonTypeEnum, IFormSingIn } from "@/interface/interface";
 import Button from "../Button/Button";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useSingInMutation } from "@/hook/useSingInMutation";
+import { useLoginMutation } from "@/hook/useLoginMutation";
 
 const validationSchema = Yup.object({
 	email: Yup.string()
@@ -34,42 +35,74 @@ const initialValues: IFormSingIn = {
 
 const FormSingIn = () => {
 	const router = useRouter();
+	const [value, setValue] = useState(initialValues);
 	const { mutate: singIn, isError, isSuccess, isPending } = useSingInMutation();
+	const {
+		mutate: login,
+		isError: isErrorLogin,
+		isSuccess: isSuccessLogin,
+		isPending: isPendingLogin,
+	} = useLoginMutation();
 
 	const handleSubmit = (
 		values: IFormSingIn,
-		{ resetForm }: FormikHelpers<IFormSingIn>,
+		// { resetForm }: FormikHelpers<IFormSingIn>,
 	) => {
 		const { email, password } = values;
 		singIn({ email, password });
 
-		if (isSuccess && !isError) {
-			resetForm();
-		}
+		// if (isSuccess && !isError) {
+		// 	resetForm();
+		// }
 	};
 
 	useEffect(() => {
 		if (isSuccess && !isError) {
+			const { email, password } = value;
+			login({ email, password });
+		}
+	}, [isSuccess, isError, value, login]);
+
+	useEffect(() => {
+		if (isSuccessLogin && !isErrorLogin) {
 			router.push("/order");
 		}
-	}, [isError, router, isSuccess]);
+	}, [isErrorLogin, isSuccessLogin, router]);
 
 	return (
 		<>
 			<Formik
-				initialValues={initialValues}
+				initialValues={value}
 				validationSchema={validationSchema}
 				onSubmit={handleSubmit}
 			>
-				{({}) => (
+				{({ values, setFieldValue }) => (
 					<Form className={styles.form}>
 						<Label htmlFor="name">
 							Name
-							<Input type="text" name="name" placeholder="Enter your name" />
+							<Input
+								type="text"
+								name="name"
+								placeholder="Enter your name"
+								value={value.name}
+								onChange={e => {
+									setFieldValue("name", e.target.value);
+									setValue({ ...value, name: e.target.value });
+								}}
+							/>
 						</Label>
 						<Label htmlFor="email">
 							Email
-							<Input type="text" name="email" placeholder="Enter your email" />
+							<Input
+								type="text"
+								name="email"
+								placeholder="Enter your email"
+								value={value.email}
+								onChange={e => {
+									setFieldValue("email", e.target.value);
+									setValue({ ...value, email: e.target.value });
+								}}
+							/>
 						</Label>
 						<Label htmlFor="password">
 							Password
@@ -78,6 +111,11 @@ const FormSingIn = () => {
 								name="password"
 								placeholder="Enter your password"
 								hideToggle={true}
+								value={value.password}
+								onChange={e => {
+									setFieldValue("password", e.target.value);
+									setValue({ ...value, password: e.target.value });
+								}}
 							/>
 						</Label>
 						<Field
@@ -85,6 +123,12 @@ const FormSingIn = () => {
 							name="policy"
 							id="policy"
 							className={styles.checkbox}
+							value={values.policy}
+							checked={values.policy}
+							onChange={(e: ChangeEvent<HTMLInputElement>) => {
+								setFieldValue("policy", e.target.checked);
+								setValue({ ...value, policy: e.target.checked });
+							}}
 						/>
 						<label htmlFor="policy" className={styles.policy}>
 							By creating an account, I agree to our Terms of use and Privacy Policy
@@ -92,7 +136,7 @@ const FormSingIn = () => {
 						</label>
 
 						<Button
-							disabled={isPending}
+							disabled={isPending || isPendingLogin || (isSuccess && isSuccessLogin)}
 							type={ButtonTypeEnum.submit}
 							buttonClass="buttonGreen"
 						>

@@ -42,6 +42,7 @@ const FormAddRoom: FC<InventorListProps> = ({ onClose }) => {
 			Notiflix.Loading.arrows({ svgColor: "#628ecb" });
 		},
 		onError: error => {
+			Notiflix.Loading.remove();
 			Notify.failure(error.message, {
 				position: "right-top",
 				clickToClose: true,
@@ -78,7 +79,7 @@ const FormAddRoom: FC<InventorListProps> = ({ onClose }) => {
 						<ErrorMessage component="p" name="name" className={styles.error} />
 					</label>
 
-					<label className={styles.label}>
+					{/* <label className={styles.label}>
 						Room size
 						<Field
 							className={styles.field}
@@ -87,7 +88,7 @@ const FormAddRoom: FC<InventorListProps> = ({ onClose }) => {
 							placeholder="Write a room size"
 						/>
 						<ErrorMessage component="p" name="size" className={styles.error} />
-					</label>
+					</label> */}
 
 					<div className={styles.photoInputWrapper}>
 						<AddPhotoInput

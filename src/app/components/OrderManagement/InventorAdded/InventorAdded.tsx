@@ -9,12 +9,14 @@ import DetailCardList from "./DetailCardList/DetailCardList";
 import ImageCardList from "./ImageCardList/ImageCardList";
 import SpriteSVG from "../../SpriteSVG/SpriteSVG";
 import useWindowWidth from "@/hook/useWindowWidth";
+import { IInventorsItems } from "@/interface/interface";
 
 interface InventorAddedProps {
 	isComplete: boolean;
+	inventors: IInventorsItems[];
 }
 
-const InventorAdded: FC<InventorAddedProps> = ({ isComplete }) => {
+const InventorAdded: FC<InventorAddedProps> = ({ isComplete, inventors }) => {
 	const router = useRouter();
 	const isMobile = useWindowWidth(490);
 
@@ -27,13 +29,13 @@ const InventorAdded: FC<InventorAddedProps> = ({ isComplete }) => {
 			<div className={styles.hederInfo}>
 				<h3 className={styles.title}>Inventor added</h3>
 				<span className={styles.totalItems}>
-					Total items: <span className={styles.number}>3</span>
+					Total items: <span className={styles.number}>{inventors.length}</span>
 				</span>
 			</div>
 
 			<div className={styles.counterWrapper}>
-				<ImageCardList />
-				<DetailCardList />
+				<ImageCardList inventors={inventors} />
+				<DetailCardList inventors={inventors} />
 			</div>
 			{!isComplete && (
 				<div className={styles.buttonContainer}>

@@ -10,6 +10,7 @@ interface BookingInfoProps {
 	inventorsIsPending: boolean;
 	items: IInventorsItems[];
 	isComplete: boolean;
+	onCancelBooking: () => void;
 }
 
 const BookingInfo: FC<BookingInfoProps> = ({
@@ -18,6 +19,7 @@ const BookingInfo: FC<BookingInfoProps> = ({
 	inventorsIsPending,
 	items,
 	isComplete,
+	onCancelBooking,
 }) => {
 	const calculateVolumes = (items: IInventorsItems[]) => {
 		return items?.map(item => {
@@ -47,11 +49,17 @@ const BookingInfo: FC<BookingInfoProps> = ({
 				<ul className={styles.list}>
 					<li className={styles.item}>
 						<span className={styles.spanText}>Per hr for labor</span>
-						<span className={styles.spanPrice}>${`${totalVolume * 5}`}</span>
+						<span className={styles.spanPrice}>
+							{" "}
+							${`${parseFloat((totalVolume * 5).toFixed(2))}`}
+						</span>
 					</li>
 					<li className={styles.item}>
 						<span className={styles.spanText}>One-time truck and gas fee</span>
-						<span className={styles.spanPrice}>${`${totalVolume * 5}`}</span>
+						<span className={styles.spanPrice}>
+							{" "}
+							${`${parseFloat((totalVolume * 5).toFixed(2))}`}
+						</span>
 					</li>
 				</ul>
 				<span className={styles.spanTextInfo}>
@@ -62,7 +70,9 @@ const BookingInfo: FC<BookingInfoProps> = ({
 			</div>
 			<div className={styles.containerTotal}>
 				<span className={styles.spanTotalTitle}>Total costs for 3 hrs</span>
-				<span className={styles.spanTotalPrice}>${`${totalVolume * 5}`}</span>
+				<span className={styles.spanTotalPrice}>
+					${`${parseFloat((totalVolume * 5).toFixed(2))}`}
+				</span>
 			</div>
 			<div className={styles.buttonContainer}>
 				<Button
@@ -73,7 +83,11 @@ const BookingInfo: FC<BookingInfoProps> = ({
 				>
 					{isComplete ? "Confirm and proceed deposit" : "Book now "}
 				</Button>
-				{!isComplete && <Button buttonClass="buttonWhite">Cancel booking</Button>}
+				{!isComplete && (
+					<Button onClick={onCancelBooking} buttonClass="buttonWhite">
+						Cancel booking
+					</Button>
+				)}
 			</div>
 			{!isComplete && (
 				<button

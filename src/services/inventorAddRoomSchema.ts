@@ -16,6 +16,7 @@ enum SuportedFilesExtensions {
 export const validationSchema = object({
 	name: string().required("The field is mandatory"),
 	photo: mixed<File>()
+		.required("File is required")
 		.test({
 			message: `Please provide a supported file type ${Object.values(
 				SuportedFilesExtensions,

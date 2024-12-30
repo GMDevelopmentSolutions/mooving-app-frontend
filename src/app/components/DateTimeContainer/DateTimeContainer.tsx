@@ -31,8 +31,6 @@ const DateTimeContainer: FC<DateTimeContainerProps> = ({
 	expectedDate,
 	disabled,
 }) => {
-	console.log("disabled", disabled);
-
 	const dataAndTimeNaw = new Date();
 	const hours = dataAndTimeNaw.getHours();
 	const minutes = dataAndTimeNaw.getMinutes();

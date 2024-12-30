@@ -40,7 +40,7 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ children, userRole }) => {
 			router.push("/login");
 			return;
 		}
-	}, [data]);
+	}, [data, isError, isLoading, router, userRole]);
 
 	if (isLoading) return <Loader />;
 

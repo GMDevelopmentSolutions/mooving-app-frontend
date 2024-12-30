@@ -8,7 +8,7 @@ const InventorList: FC<InventorListProps> = ({
 	isError,
 	error,
 	rooms,
-	onclick: { handleShowModal, handleShowModalRoomCreate },
+	onclick,
 }) => {
 	if (isError)
 		Notify.failure(`${error}`, {
@@ -22,15 +22,16 @@ const InventorList: FC<InventorListProps> = ({
 		<ul className={styles.list}>
 			<InventorItem
 				text="Add room"
-				onClick={handleShowModalRoomCreate}
+				onClick={onclick}
 				src="/img/inventorItem/add_room.png"
 			/>
 			{rooms?.map(item => (
 				<InventorItem
 					key={item.id}
+					id={item.id}
 					src={process.env.NEXT_PUBLIC_API_URL + "/uploads/" + item.photoPath}
 					text={item.name}
-					onClick={handleShowModal}
+					onClick={onclick}
 				/>
 			))}
 		</ul>

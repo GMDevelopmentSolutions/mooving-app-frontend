@@ -8,8 +8,8 @@ import BtnDelete from "../BtnDelete/BtnDelete";
 import { useDispatch } from "react-redux";
 import { removeStop } from "@/app/redux/slice/locationSlice";
 
-const mapStyle =
-	"https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY || "";
+const mapStyle = `https://api.maptiler.com/maps/streets/style.json?key=${apiKey}`;
 
 interface DeliveryPointProps {
 	id?: number;
@@ -21,6 +21,7 @@ interface DeliveryPointProps {
 		address: string,
 		id?: number,
 	) => void;
+	isCompleted?: boolean;
 }
 
 const DeliveryPoint = ({
@@ -29,6 +30,7 @@ const DeliveryPoint = ({
 	onChangeLocation,
 	coordinates,
 	id,
+	isCompleted,
 }: DeliveryPointProps) => {
 	const [showMap, setShowMap] = useState(false);
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -45,72 +47,87 @@ const DeliveryPoint = ({
 	useEffect(() => {
 		if (!coordinates || (coordinates[0] === 0 && coordinates[1] === 0)) {
 			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(
-					async position => {
-						const { latitude, longitude } = position.coords;
+				const geoOptions: PositionOptions = {
+					timeout: 10000,
+				};
+
+				const geoSuccess = async (position: GeolocationPosition) => {
+					const { latitude, longitude } = position.coords;
+					try {
 						const address = await getCityAndStreet({ lat: latitude, lon: longitude });
-						onChangeLocation([longitude, latitude], address, id ?? 0);
 						setCityAndStreet(address);
-					},
-					() => {
-						const defaultCoordinates: [number, number] = [30.5234, 50.4501];
-						onChangeLocation(defaultCoordinates, "Default Location", id ?? 0);
-						setCityAndStreet("Default Location");
-					},
-				);
+						onChangeLocation([longitude, latitude], address, id ?? 0);
+					} catch {}
+				};
+
+				const geoError = () => {
+					const defaultCoordinates: [number, number] = [30.5234, 50.4501];
+					onChangeLocation(defaultCoordinates, "Default Location", id ?? 0);
+					setCityAndStreet("Default Location");
+				};
+
+				navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
 			} else {
 				const defaultCoordinates: [number, number] = [30.5234, 50.4501];
 				onChangeLocation(defaultCoordinates, "Default Location", id ?? 0);
 				setCityAndStreet("Default Location");
 			}
+		} else if (coordinates && !cityAndStreet) {
+			const [lng, lat] = coordinates;
+			getCityAndStreet({ lat, lon: lng })
+				.then(address => {
+					setCityAndStreet(address);
+					onChangeLocation(coordinates, address, id ?? 0);
+				})
+				.catch(error => {
+					throw error;
+				});
 		}
-	}, [coordinates, onChangeLocation, id]);
+	}, [coordinates, onChangeLocation, id, cityAndStreet]);
 
 	useEffect(() => {
-		if (coordinates && mapContainerRef.current) {
-			const [lng, lat] = coordinates;
-			if (isNaN(lng) || isNaN(lat)) return;
+		if (!coordinates || !mapContainerRef.current) return;
 
-			if (!mapRef.current) {
-				mapRef.current = new maplibregl.Map({
-					container: mapContainerRef.current,
-					style: mapStyle,
-					center: coordinates,
-					zoom: 12,
-				});
+		const [lng, lat] = coordinates;
 
-				markerRef.current = new maplibregl.Marker({ color: fill })
-					.setLngLat(coordinates)
-					.setPopup(new maplibregl.Popup().setText("You are here!"))
-					.addTo(mapRef.current);
+		if (isNaN(lng) || isNaN(lat)) return;
 
-				mapRef.current.on("click", async event => {
-					const { lng, lat } = event.lngLat;
-					const address = await getCityAndStreet({ lat, lon: lng });
-					setCityAndStreet(address);
-					onChangeLocation([lng, lat], address as string, id ?? 0);
-					markerRef.current?.setLngLat([lng, lat]);
+		if (!mapRef.current) {
+			mapRef.current = new maplibregl.Map({
+				container: mapContainerRef.current,
+				style: mapStyle,
+				center: coordinates,
+				zoom: 12,
+			});
 
-					mapRef.current?.flyTo({
-						center: [lng, lat],
-						essential: true,
-						speed: 0.5,
-						curve: 1,
-					});
-				});
-			} else {
-				mapRef.current.flyTo({
-					center: coordinates,
+			markerRef.current = new maplibregl.Marker({ color: fill })
+				.setLngLat(coordinates)
+				.setPopup(new maplibregl.Popup().setText("You are here!"))
+				.addTo(mapRef.current);
+
+			mapRef.current.on("click", async event => {
+				const { lng, lat } = event.lngLat;
+				const address = await getCityAndStreet({ lat, lon: lng });
+				setCityAndStreet(address);
+				onChangeLocation([lng, lat], address, id ?? 0);
+				markerRef.current?.setLngLat([lng, lat]);
+
+				mapRef.current?.flyTo({
+					center: [lng, lat],
 					essential: true,
 					speed: 0.5,
 					curve: 1,
 				});
-
-				markerRef.current?.setLngLat(coordinates);
-			}
+			});
+		} else {
+			mapRef.current.flyTo({
+				center: coordinates,
+				essential: true,
+				speed: 0.5,
+				curve: 1,
+			});
+			markerRef.current?.setLngLat(coordinates);
 		}
-
-		setShowMap(false);
 
 		return () => {
 			if (mapRef.current) {
@@ -118,7 +135,9 @@ const DeliveryPoint = ({
 				mapRef.current = null;
 			}
 		};
-	}, [coordinates, onChangeLocation, fill, id]);
+	}, [coordinates, fill, id, onChangeLocation]);
+
+	if (id === 0) return null;
 
 	return (
 		<>
@@ -137,7 +156,9 @@ const DeliveryPoint = ({
 					</span>
 				</p>
 			</div>
-			<div className={`${styles.mapContainer} ${showMap ? styles.showMap : ""}`}>
+			<div
+				className={`${styles.mapContainer} ${!isCompleted && showMap ? styles.showMap : ""}`}
+			>
 				<div className={styles.mapWrapper}>
 					<div ref={mapContainerRef} className={styles.map} />
 				</div>

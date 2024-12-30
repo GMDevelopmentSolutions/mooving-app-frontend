@@ -1,9 +1,10 @@
 "use client";
-import { type FC, type ChangeEvent } from "react";
+import { type FC, type ChangeEvent, useState } from "react";
 import styles from "./DescriptionContainer.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRoute } from "@/app/redux/selectLocation";
 import { setDescription } from "@/app/redux/slice/locationSlice";
+import useDebaunce from "@/hook/useDebaunce";
 
 interface DescriptionContainerProps {
 	disabled: boolean;
@@ -11,10 +12,18 @@ interface DescriptionContainerProps {
 
 const DescriptionContainer: FC<DescriptionContainerProps> = ({ disabled }) => {
 	const dispatch = useDispatch();
-	const { description: text } = useSelector(selectRoute);
+	const { description: initialText } = useSelector(selectRoute);
+
+	const [text, setText] = useState(initialText);
+
+	const debouncedMutate = useDebaunce((value: string) => {
+		dispatch(setDescription(value));
+	}, 500);
 
 	const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-		dispatch(setDescription(event.target.value));
+		const value = event.target.value;
+		setText(value);
+		debouncedMutate(value);
 	};
 
 	return (
@@ -30,4 +39,5 @@ const DescriptionContainer: FC<DescriptionContainerProps> = ({ disabled }) => {
 		</div>
 	);
 };
+
 export default DescriptionContainer;

@@ -41,7 +41,6 @@ const StatusDropdown: FC<Props> = ({ status, isUser, onChangeStatus, id }) => {
 	};
 
 	const changeStatus = (newStatus: string) => {
-		console.log("id", id);
 		setSelectedStatus(newStatus);
 		const newStatusNumber =
 			statusToNumber[newStatus as keyof typeof statusToNumber];

@@ -1,12 +1,12 @@
-import { authorizationService } from "@/services/authorizationService";
+import { userService } from "@/services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Notify } from "notiflix";
 
-export const useSingInMutation = () => {
+export const useCallbackForm = () => {
 	return useMutation({
-		mutationFn: ({ email, password }: { email: string; password: string }) =>
-			authorizationService.sinInRequest({ email, password }),
+		mutationFn: (formValues: { [key: string]: string }) =>
+			userService.callbackForm(formValues),
 		onSuccess: () => {
 			Notify.success("The action was successful.", {
 				position: "right-top",
@@ -16,7 +16,7 @@ export const useSingInMutation = () => {
 			});
 		},
 		onError: (error: AxiosError) => {
-			Notify.failure(`${error.response?.data}`, {
+			Notify.failure(`${error.message}`, {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

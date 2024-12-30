@@ -3,10 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Notify } from "notiflix";
 
-export const useSingInMutation = () => {
+export const useLogoutMutation = () => {
 	return useMutation({
-		mutationFn: ({ email, password }: { email: string; password: string }) =>
-			authorizationService.sinInRequest({ email, password }),
+		mutationFn: () => authorizationService.logoutRequest(),
 		onSuccess: () => {
 			Notify.success("The action was successful.", {
 				position: "right-top",
@@ -16,7 +15,7 @@ export const useSingInMutation = () => {
 			});
 		},
 		onError: (error: AxiosError) => {
-			Notify.failure(`${error.response?.data}`, {
+			Notify.failure(`${error.message}`, {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

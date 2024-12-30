@@ -8,7 +8,7 @@ export const useLoginMutation = () => {
 		mutationFn: ({ email, password }: { email: string; password: string }) =>
 			authorizationService.loginRequest({ email, password }),
 		onSuccess: () => {
-			Notify.success("You have successfully logged in.", {
+			Notify.success("The action was successful.", {
 				position: "right-top",
 				clickToClose: true,
 				timeout: 5000,

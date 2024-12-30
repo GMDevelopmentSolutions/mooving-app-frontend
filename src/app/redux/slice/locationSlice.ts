@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getToLocalStorage } from "../localStorage/getToLocalStorage";
 import { setToLocalStorage } from "../localStorage/setToLocalStorage";
-
 import { Coordinates } from "@/interface/interface";
 
 interface StopLocation {
@@ -75,8 +74,8 @@ const locationSlice = createSlice({
 			setToLocalStorage(state);
 		},
 
-		resetRoute(state) {
-			state = {
+		resetRoute() {
+			const newState = {
 				startLocation: {
 					latitude: 0,
 					longitude: 0,
@@ -92,7 +91,8 @@ const locationSlice = createSlice({
 				description: "",
 				labourRequiredType: 0,
 			};
-			setToLocalStorage(state);
+			setToLocalStorage(newState);
+			return newState;
 		},
 	},
 });
