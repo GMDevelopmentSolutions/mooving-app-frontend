@@ -23,15 +23,16 @@ const availableStatuses = [
 
 const statusToNumber = {
 	Request: 0,
-	Confirmed: 5,
-	Booked: 10,
-	Cancelled: 20,
-	Closed: 50,
-	"Invoice Sent": 100,
-	"Invoice Confirmed": 400,
+	Booked: 5,
+	"Invoice Sent": 10,
+	"Invoice Confirmed": 20,
+	Confirmed: 50,
+	Closed: 100,
+	Cancelled: 400,
 } as const;
 
 const StatusDropdown: FC<Props> = ({ status, isUser, onChangeStatus, id }) => {
+	console.log("status: " + status);
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedStatus, setSelectedStatus] = useState(labelByStatus[status]);
 	const dropdownRef = useRef<HTMLDivElement>(null);

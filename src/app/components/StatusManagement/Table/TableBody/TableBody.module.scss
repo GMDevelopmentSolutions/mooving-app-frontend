@@ -1,52 +1,56 @@
 .tbody {
-  tr {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    transition: background-color 0.3s ease;
-    border-bottom: 1px solid #f2f6f4;
+	tr {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		transition: background-color 0.3s ease;
+		border-bottom: 1px solid #f2f6f4;
 
-    &:hover {
-      background-color: #f2f8fe;
-    }
-  }
+		&:hover {
+			background-color: #f2f8fe;
+		}
+	}
 
-  td {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 30px;
-    text-align: left;
-    color: #092c4c;
-    padding: 15px 6px;
-    width: calc(100% / 5);
-  }
+	td {
+		font-size: 16px;
+		font-weight: 400;
+		line-height: 30px;
+		text-align: left;
+		color: #092c4c;
+		padding: 15px 6px;
+		width: calc(100% / 5);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		cursor: pointer;
+	}
 
-  .refusal {
-    text-decoration: underline;
-    color: var(--text-black);
-  }
+	.refusal {
+		text-decoration: underline;
+		color: var(--text-black);
+	}
 }
 
 @media (max-width: 490px) {
-  .label {
-    min-width: 165px;
-  }
+	.label {
+		min-width: 165px;
+	}
 
-  .description {
-    min-width: 200px;
-  }
+	.description {
+		min-width: 200px;
+	}
 
-  .status {
-    min-width: 97px;
-  }
+	.status {
+		min-width: 97px;
+	}
 
-  .date {
-    min-width: 92px;
-  }
+	.date {
+		min-width: 92px;
+	}
 
-  .button {
-    min-width: 122px;
-  }
+	.button {
+		min-width: 122px;
+	}
 }

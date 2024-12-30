@@ -2,12 +2,11 @@
 const nextConfig = {
 	images: {
 		loader: "default",
+		domains: [process.env.NEXT_PUBLIC_API_URL],
 		remotePatterns: [
 			{
-				protocol: "http",
-				hostname: "localhost",
-				port: "8080",
-				pathname: "/**",
+				protocol: process.env.NEXT_PUBLIC_PROTOCOL,
+				hostname: process.env.NEXT_PUBLIC_HOSTNAME,
 			},
 		],
 	},

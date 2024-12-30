@@ -161,7 +161,7 @@ const OrderManagement: FC<OrderManagementProps> = ({ orderId }) => {
 					<FeedbackForm onClose={handleShowFeedbackForm} />
 				</Modal>
 			)}
-			<Header>{orderId ? "Label :" + orderId : "Edit Profile"}</Header>
+			<Header>{orderId ? "Label :" + orderId : "Order"}</Header>
 			{isClient && (
 				<Wrap>
 					<Container>

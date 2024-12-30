@@ -8,7 +8,9 @@ import Label from "../Label/Label";
 import Button from "../Button/Button";
 import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/hook/useLoginMutation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Modal from "../Modal/modal";
+import FormForgetPassword from "./formForgetPassword";
 
 const validationSchema = Yup.object({
 	email: Yup.string()
@@ -33,6 +35,7 @@ const initialValues: IFormLogin = {
 const FormLogin = () => {
 	const router = useRouter();
 	const { mutate: login, isError, isSuccess, isPending } = useLoginMutation();
+	const [showForm, setShowForm] = useState(false);
 
 	const handleSubmit = (
 		values: IFormLogin,
@@ -55,8 +58,18 @@ const FormLogin = () => {
 		}
 	}, [isError, router, isSuccess]);
 
+	const handleClose = () => {
+		setShowForm(false);
+	};
+
 	return (
 		<>
+			{showForm && (
+				<Modal title="Forget your password" handleClose={handleClose}>
+					<FormForgetPassword onClose={handleClose} />
+				</Modal>
+			)}
+
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
@@ -78,7 +91,11 @@ const FormLogin = () => {
 								hideToggle={true}
 							/>
 						</Label>
-						<button type="button" className={styles.buttonForget}>
+						<button
+							onClick={() => setShowForm(true)}
+							type="button"
+							className={styles.buttonForget}
+						>
 							Forget your password
 						</button>
 						<Button

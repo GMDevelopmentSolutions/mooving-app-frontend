@@ -27,18 +27,33 @@ const TableBody: FC<TableBodyProps> = ({
 	return (
 		<>
 			<tbody className={styles.tbody}>
-				{data?.map(({ id, briefDescription, orderStatus, expectedDate }, index) => {
+				{data?.map(({ id, briefDescription, orderStatus, expectedDate }) => {
 					const statusClass = labelByStatus[orderStatus].toLowerCase();
 					return (
 						<tr key={id} className={styles.tr}>
-							<td onClick={() => handleRedirect(id)} className={styles.label}>
-								Label {index + 1}
+							<td
+								onClick={() => handleRedirect(id)}
+								className={styles.label}
+								title={id.toString()}
+							>
+								Label {id}
 							</td>
-							<td className={styles.description}>{briefDescription}</td>
-							<td className={clsx(styles.status, styles[statusClass], styles.status)}>
+							<td
+								className={styles.description}
+								title={briefDescription}
+								onClick={() => handleRedirect(id)}
+							>
+								{briefDescription ? briefDescription : "- - - -"}
+							</td>
+							<td
+								className={clsx(styles.status, styles[statusClass], styles.status)}
+								onClick={() => handleRedirect(id)}
+							>
 								<StatusDropdown isUser status={orderStatus} />
 							</td>
-							<td className={styles.date}>{formatDate(expectedDate)}</td>
+							<td className={styles.date} onClick={() => handleRedirect(id)}>
+								{formatDate(expectedDate)}
+							</td>
 							<td className={clsx(styles.refusal, styles.button)}>
 								{Number(orderStatus) !== 0 && (
 									<button

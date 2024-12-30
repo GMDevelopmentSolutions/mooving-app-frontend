@@ -49,4 +49,12 @@ export const authorizationService = {
 			throw error;
 		}
 	},
+	forgotPassword: async ({ email }: { email: string }) => {
+		try {
+			const { data } = await instance.post(`/forgotPassword`, { email });
+			return data;
+		} catch (error) {
+			throw error;
+		}
+	},
 };

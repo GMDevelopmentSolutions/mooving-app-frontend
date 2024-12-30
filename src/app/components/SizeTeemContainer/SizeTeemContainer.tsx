@@ -8,25 +8,25 @@ import "swiper/css";
 
 const data = [
 	{
-		label: "Labour only (2 movers with equipment)",
+		label: "Labour only (1 mover with equipment)",
 		id: 0,
 		name: "size",
 		value: 0,
-		text: "Total costs for 3 hrs be 347$",
+		text: "Total costs for 3 hrs: 150$",
 	},
 	{
 		label: "Labour only (2 movers with equipment)",
 		id: 1,
 		name: "size",
 		value: 1,
-		text: "Total costs for 3 hrs be 347$",
+		text: "Total costs for 3 hrs: 347$",
 	},
 	{
-		label: "Labour only (2 movers with equipment)",
+		label: "Labour only (3 movers with equipment)",
 		id: 2,
 		name: "size",
 		value: 2,
-		text: "Total costs for 3 hrs be 347$",
+		text: "Total costs for 3 hrs: 500$",
 	},
 ];
 

@@ -1,6 +1,5 @@
 import OrderManagement from "@/app/components/OrderManagement/OrderManagement";
 
-
 export const metadata = {
 	title: "Order",
 	description: "Order",
