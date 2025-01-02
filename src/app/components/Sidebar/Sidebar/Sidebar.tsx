@@ -47,6 +47,11 @@ const Sidebar = ({}) => {
 		if (path === "inventor") setCurrentPage("Inventor management");
 	}, [path]);
 
+	const acmeCoPhone = process.env.NEXT_PUBLIC_ACME_CO_PHONE;
+	const acmeCoPhoneLink = process.env.NEXT_PUBLIC_ACME_CO_PHONE_LINK;
+	const acmeCoInfo = process.env.NEXT_PUBLIC_ACME_CO_INFO;
+	const acmeCoAddress = process.env.NEXT_PUBLIC_ACME_CO_TEXT;
+
 	return (
 		<aside className={styles.aside} ref={sidebarRef}>
 			<div className={styles.sideContainer}>
@@ -95,15 +100,16 @@ const Sidebar = ({}) => {
 					</SidebarItem>
 				</ul>
 				<div className={styles.wrapFooter}>
-					<Link href="tel:1081777056" className={styles.linkTel}>
-						<span>Our contact</span>101-186-5212
+					<Link href={`${acmeCoPhoneLink}`} className={styles.linkTel}>
+						<span>{acmeCoInfo}</span>
+						{acmeCoPhone}
 					</Link>
 					<div className={styles.linkLogout}>
 						<Logout />
 					</div>
 
 					<Link href="#" className={styles.linkLicense}>
-						Terms and conditions
+						{acmeCoAddress}
 					</Link>
 				</div>
 			</div>
